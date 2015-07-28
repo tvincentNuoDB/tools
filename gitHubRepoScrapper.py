@@ -9,7 +9,7 @@ password = getpass.getpass()
 r = requests.get('https://api.github.com/orgs/nuodb/repos?per_page=100', auth=(username, password))
 data = r.json()
 
-csv = "Repo name|Repo description|Language|URL|Private|Last Updated\n"
+csv = "Repo name|Repo description|Language|URL|Private|Last Updated|Created\n"
 
 for repo in data:
 
@@ -19,9 +19,11 @@ for repo in data:
 	lang = repo['language']
 	lang = lang if lang != None else "None"
 
-	time = repo['pushed_at'].replace("T", " ").replace("Z", "")
+	lastUpdate = repo['pushed_at'].replace("T", " ").replace("Z", "")
 
-	csv += repo['name'] + '|' + desc +  '|' + lang + '|' + repo['url'] + '|' + str(repo['private']) + '|' + time + "\n"
+	created = repo['created_at'].replace("T", " ").replace("Z", "")
+
+	csv += repo['name'] + '|' + desc +  '|' + lang + '|' + repo['html_url'] + '|' + str(repo['private']) + '|' + lastUpdate + '|' + created + "\n"
 
 f = open('data.csv', 'w')
 f.write(csv.encode('utf8'))
