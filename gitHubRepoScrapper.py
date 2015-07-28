@@ -1,6 +1,12 @@
-import requests
+import requests, getpass
 
-r = requests.get('https://api.github.com/orgs/nuodb/repos?per_page=100', auth=('GitHub_Username', 'GitHub_Password'))
+print("GitHub Username: ")
+username = raw_input()
+
+print("GitHub Password: ")
+password = getpass.getpass()
+
+r = requests.get('https://api.github.com/orgs/nuodb/repos?per_page=100', auth=(username, password))
 data = r.json()
 
 csv = "Repo name|Repo description|Language|URL|Private|Last Updated\n"
